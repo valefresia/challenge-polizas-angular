@@ -1,0 +1,10 @@
+.form {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin-top: 16px;
+}
+.form mat-form-field { flex: 1; }
+table { width: 100%; }
+.col-acciones { width: 120px; text-align: right; }
+.vacio { text-align: center; color: #777; padding: 24px; }

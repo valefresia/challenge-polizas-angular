@@ -1,0 +1,5 @@
+.encabezado { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+table { width: 100%; }
+.num { text-align: right; }
+.col-acciones { width: 120px; text-align: right; }
+.vacio { text-align: center; color: #777; padding: 24px; }

@@ -1,14 +1,39 @@
-# Clonar o descargar proyecto:
-Consumir la API “Challenge-Jr Backend”, Se deberá poder hacer el CRUD del maestro detalle de las pólizas y el CRUD de las coberturas mediante una interfaz agradable y amigable.
+# Challenge Jr - Frontend Angular (Admin de Pólizas)
 
-# AdminPolizas
+Aplicación para administrar coberturas y pólizas de seguros de autos.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.16.
+## Funcionalidades
+- CRUD de coberturas.
+- CRUD de pólizas con detalle (cobertura + monto asegurado) y monto total calculado.
+- Validaciones, avisos y confirmación de borrado.
+- Interfaz con Angular Material.
 
-## Development server
+## Requisitos
+- Node 16 (recomendado para Angular 12) y Angular CLI 12
+- Back corriendo en `http://localhost:5073` (ver repo del backend)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Cómo correrlo
+1. Levantar el back (`dotnet ef database update` y `dotnet run`).
+2. En este repo:
+```bash
+   npm install
+   ng serve
+```
+3. Abrir `http://localhost:4200`.
 
-## Code scaffolding
+La URL de la API se configura en `src/environments/environment.ts`.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Cambios realizados en el backend
+- `PolizasCoberturasController`: los `GET` leían de la tabla `Polizas`; ahora leen de `PolizasCoberturas`, con filtro opcional `?polizaId=`.
+- `PolizasCoberturas`: `Poliza` y `Cobertura` pasan a ser nulables para poder crear detalles enviando solo los IDs.
+- `PUT` del detalle: ahora actualiza `PolizaId` y `CoberturaId`.
+
+## Decisiones técnicas
+- El monto total se calcula en el front sumando los montos de cada fila.
+- Formulario de póliza con `FormArray`; no permite coberturas repetidas.
+- Al editar, se comparan las filas originales con las actuales para crear, actualizar o borrar.
+
+## Posibles mejoras
+- Endpoint en el back que devuelva la póliza con su detalle y total en una sola llamada.
+- Paginación y búsqueda en los listados.
+- Tests unitarios de servicios y componentes.

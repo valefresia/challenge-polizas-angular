@@ -1,0 +1,66 @@
+<mat-card>
+  <mat-card-title>{{ polizaId ? 'Editar póliza' : 'Nueva póliza' }}</mat-card-title>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <mat-form-field appearance="outline" class="completo">
+      <mat-label>Nombre de la póliza</mat-label>
+      <input matInput formControlName="nombre" maxlength="256" />
+      <mat-error>El nombre es obligatorio</mat-error>
+    </mat-form-field>
+
+    <h3>Coberturas</h3>
+
+    <div formArrayName="detalles">
+      <div *ngFor="let d of detalles.controls; let i = index" [formGroupName]="i" class="fila">
+        <mat-form-field appearance="outline" class="cobertura">
+          <mat-label>Cobertura</mat-label>
+          <mat-select formControlName="coberturaId">
+            <mat-option
+              *ngFor="let c of coberturas"
+              [value]="c.id"
+              [disabled]="usada(c.id, i)"
+            >
+              {{ c.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Elegí una cobertura</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="monto">
+          <mat-label>Monto asegurado</mat-label>
+          <span matPrefix>$&nbsp;</span>
+          <input matInput type="number" formControlName="montoAsegurado" min="0" />
+          <mat-error>Ingresá un monto mayor a 0</mat-error>
+        </mat-form-field>
+
+        <button
+          mat-icon-button
+          color="warn"
+          type="button"
+          matTooltip="Quitar"
+          (click)="quitarDetalle(i)"
+          [disabled]="detalles.length === 1"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-error *ngIf="detalles.hasError('repetidas')">
+      No podés repetir una cobertura en la misma póliza.
+    </mat-error>
+
+    <button mat-stroked-button type="button" (click)="agregarDetalle()">
+      <mat-icon>add</mat-icon> Agregar cobertura
+    </button>
+
+    <div class="total">Monto asegurado total: {{ total | currency }}</div>
+
+    <div class="acciones">
+      <a mat-button routerLink="/polizas">Cancelar</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || guardando">
+        Guardar
+      </button>
+    </div>
+  </form>
+</mat-card>
